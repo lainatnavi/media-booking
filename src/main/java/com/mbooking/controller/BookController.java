@@ -21,6 +21,6 @@ public class BookController {
                     // into the id parameter of the book method
                     long id) {
         return new Book(counter.incrementAndGet(),
-                String.format(book,id), "", "");
+                String.format(book,id), "George Orwell", "");
     }
 }
