@@ -1,25 +1,28 @@
 package com.mbooking.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String name;
-    private String author;
+    private Long id;
+    private String title;
     private String isbn;
+
+    @ManyToMany
+    @JoinTable(
+        name = "BOOK_AUTHOR",
+        joinColumns = @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID"),
+        inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID"))
+    private List<Author> authors;
 
     protected Book() {}
 
-    public Book(String name, String author, String isbn) {
-        this.name = name;
-        this.author = author;
+    public Book(String title, String author, String isbn) {
+        this.title = title;
         this.isbn = isbn;
     }
 
@@ -27,8 +30,7 @@ public class Book {
     public String toString() {
         return "Book{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", author='" + author + '\'' +
+                ", name='" + title + '\'' +
                 ", isbn='" + isbn + '\'' +
                 '}';
     }
@@ -37,12 +39,8 @@ public class Book {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getAuthor() {
-        return author;
+    public String getTitle() {
+        return title;
     }
 
     public String getIsbn() {
