@@ -1,14 +1,11 @@
 package com.mbooking.controller;
 
-import com.mbooking.model.Author;
 import com.mbooking.model.Book;
-import com.mbooking.service.AuthorService;
 import com.mbooking.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,13 +17,25 @@ public class BookController {
 
     // @PathVariable binds the value of the query string parameter id
     // into the id parameter of the book method
-    @GetMapping("/book/{id}") // HTTP requests to /book are mapped to the book() method
+    // HTTP requests to /book are mapped to the book() method
+    @GetMapping("/book/{id}")
     public Book book(@PathVariable Long id) {
         return bookService.findById(id);
+    }
+
+    @RequestMapping(value = "/books", method = RequestMethod.GET)
+    public List<Book> books() {
+        return bookService.findAll();
     }
 
     @PostMapping("/book")
     Book newBook(@RequestBody Book book) {
         return bookService.save(book);
     }
+
+    @DeleteMapping("/book/{id}")
+    public void deleteBook(@PathVariable Long id) {
+        bookService.deleteById(id);
+    }
+
 }

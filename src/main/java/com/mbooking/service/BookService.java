@@ -1,21 +1,14 @@
 package com.mbooking.service;
 
 import com.mbooking.model.Book;
-import com.mbooking.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class BookService {
+import java.util.List;
 
-    @Autowired
-    private BookRepository bookRepository;
-
-    public Book findById(Long id) {
-        return bookRepository.findById(id).orElse(null);
-    }
-
-    public Book save(Book book) {
-        return bookRepository.save(book);
-    }
+@Component // Inject interface for mock implementation (test purposes)
+public interface BookService {
+    Book findById(Long id);
+    List<Book> findAll();
+    Book save(Book book);
+    void deleteById(Long id);
 }

@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Domain model Author entity
+ */
 @Entity
 public class Author {
 
