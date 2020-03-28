@@ -1,5 +1,7 @@
 package com.mbooking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class Author {
     private String name;
 
     @ManyToMany(mappedBy = "authors")
+    @JsonIgnoreProperties("authors") // Avoid recursive parent references
     private List<Book> books;
 
     protected Author() {}
@@ -37,15 +40,11 @@ public class Author {
         return name;
     }
 
-    // This causes infinite recursion... (find out why)
-    // check:
-    //
-// https://stackoverflow.com/questions/43481353/jpa-many-to-many-relationship-causing-infinite-recursion-and-stack-overflow-erro
-//    public List<Book> getBooks() {
-//        return books;
-//    }
-//
-//    public void setBooks(List<Book> books) {
-//        this.books = books;
-//    }
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }

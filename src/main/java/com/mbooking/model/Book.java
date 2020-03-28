@@ -1,5 +1,7 @@
 package com.mbooking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class Book {
         name = "BOOK_AUTHOR",
         joinColumns = @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID"),
         inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID"))
+    @JsonIgnoreProperties("books") // Avoid recursive child references
     private List<Author> authors;
 
     protected Book() {}
