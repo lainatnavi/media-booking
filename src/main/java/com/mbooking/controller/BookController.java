@@ -3,16 +3,16 @@ package com.mbooking.controller;
 import com.mbooking.model.Book;
 import com.mbooking.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Controller
 @ResponseBody // don't produce a view (make this a REST controller)
@@ -35,17 +35,15 @@ public class BookController {
     @GetMapping("/book/{id}")
     public EntityModel<Book> book(@PathVariable Long id) {
         Book book = bookService.findById(id);
-        // logic moved to this controller's model assembler impl
         return assembler.toModel(book);
     }
 
     @RequestMapping(value = "/books", method = RequestMethod.GET)
     public CollectionModel<EntityModel<Book>> books() {
         List<EntityModel<Book>> books = bookService.findAll().stream()
-                .map(book -> new EntityModel<Book>(book,
-                        linkTo(methodOn(BookController.class).book(book.getId())).withSelfRel(),
-                        linkTo(methodOn(BookController.class).books()).withRel("books")))
+                .map(assembler::toModel)
                 .collect(Collectors.toList());
+
         return new CollectionModel<>(books,
                 linkTo(methodOn(BookController.class).books()).withSelfRel());
     }
