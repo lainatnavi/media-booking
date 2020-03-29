@@ -1,1 +1,1 @@
-# media-booking
+# media-booking REST API
