@@ -11,4 +11,5 @@ public interface BookService {
     List<Book> findAll();
     Book save(Book book);
     void deleteById(Long id);
+    Book replace(Book book, Long id);
 }

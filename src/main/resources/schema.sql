@@ -1,5 +1,7 @@
 -- Hypersonic 2 Bootstrap DDL
 
+--ALTER SEQUENCE HIBERNATE_SEQUENCE RESTART WITH 1;
+
 drop table if exists book_author;
 create table book_author (
     book_id int,

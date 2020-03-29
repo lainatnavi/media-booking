@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@ResponseBody // don't produce a view
+//@Controller
+//@ResponseBody // don't produce a view
+@RestController
 public class BookController {
 
     @Autowired
@@ -31,6 +32,11 @@ public class BookController {
     @PostMapping("/book")
     Book newBook(@RequestBody Book book) {
         return bookService.save(book);
+    }
+
+    @PutMapping("/book/{id}")
+    Book replaceBook(@RequestBody Book book, @PathVariable Long id) {
+        return bookService.replace(book, id);
     }
 
     @DeleteMapping("/book/{id}")

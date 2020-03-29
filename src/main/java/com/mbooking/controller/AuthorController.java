@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@ResponseBody // at class level, no need on author(), authors() methods...
+@RestController
 public class AuthorController {
 
     @Autowired
@@ -23,6 +22,21 @@ public class AuthorController {
     @RequestMapping(value = "/authors", method = RequestMethod.GET)
     public List<Author> authors() {
         return  authorService.findAll();
+    }
+
+    @PostMapping("/author")
+    public Author newAuthor(@RequestBody Author newAuthor) {
+        return authorService.save(newAuthor);
+    }
+
+    @PutMapping("/author/{id}")
+    public Author replace(@RequestBody Author newAuthor,@PathVariable Long id) {
+        return authorService.replace(newAuthor, id);
+    }
+
+    @DeleteMapping("/author/{id}")
+    public void delete(@PathVariable Long id) {
+        authorService.deleteById(id);
     }
 
 }
