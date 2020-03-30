@@ -1,7 +1,6 @@
 package com.mbooking.controller;
 
 import com.mbooking.model.Book;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;

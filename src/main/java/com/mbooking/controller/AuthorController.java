@@ -3,10 +3,15 @@ package com.mbooking.controller;
 import com.mbooking.model.Author;
 import com.mbooking.service.AuthorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class AuthorController {
@@ -14,14 +19,22 @@ public class AuthorController {
     @Autowired
     private AuthorServiceImpl authorService;
 
+    @Autowired
+    private AuthorModelAssembler assembler;
+
     @GetMapping("/author/{id}")
-    public Author author(@PathVariable Long id) {
-        return authorService.findById(id);
+    public EntityModel<Author> author(@PathVariable Long id) {
+        return assembler.toModel(
+                authorService.findById(id));
     }
 
     @RequestMapping(value = "/authors", method = RequestMethod.GET)
-    public List<Author> authors() {
-        return  authorService.findAll();
+    public CollectionModel<EntityModel<Author>> authors() {
+        List<EntityModel<Author>> authors = authorService.findAll()
+                .stream().map(assembler::toModel)
+                .collect(Collectors.toList());
+        return new CollectionModel<>(authors,
+                linkTo(methodOn(AuthorController.class)).withSelfRel());
     }
 
     @PostMapping("/author")
