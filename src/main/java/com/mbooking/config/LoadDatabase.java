@@ -1,7 +1,6 @@
 package com.mbooking.config;
 
-import com.mbooking.model.Book;
-import com.mbooking.repository.BookRepository;
+import com.mbooking.dao.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

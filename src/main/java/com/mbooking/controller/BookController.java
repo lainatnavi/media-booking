@@ -5,6 +5,8 @@ import com.mbooking.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,35 +34,43 @@ public class BookController {
     // @PathVariable binds the value of the query string parameter id
     // into the id parameter of the book method
     // HTTP requests to /book are mapped to the book() method
-    @GetMapping("/book/{id}")
-    public EntityModel<Book> book(@PathVariable Long id) {
+    @GetMapping("/books/{id}")
+    EntityModel<Book> book(@PathVariable Long id) {
         Book book = bookService.findById(id);
         return assembler.toModel(book);
     }
 
     @RequestMapping(value = "/books", method = RequestMethod.GET)
-    public CollectionModel<EntityModel<Book>> books() {
+    CollectionModel<EntityModel<Book>> books() {
         List<EntityModel<Book>> books = bookService.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
-
         return new CollectionModel<>(books,
                 linkTo(methodOn(BookController.class).books()).withSelfRel());
     }
 
-    @PostMapping("/book")
-    Book newBook(@RequestBody Book book) {
-        return bookService.save(book);
+    @PostMapping("/books")
+    ResponseEntity<?> newBook(@RequestBody Book book) {
+        Book newBook = bookService.save(book);
+        EntityModel<Book> entityModel = assembler.toModel(newBook);
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
-    @PutMapping("/book/{id}")
-    Book replaceBook(@RequestBody Book book, @PathVariable Long id) {
-        return bookService.replace(book, id);
+    @PutMapping("/books/{id}")
+    ResponseEntity<?> replaceBook(@RequestBody Book newBook, @PathVariable Long id) {
+        Book updatedBook = bookService.replace(newBook, id);
+        EntityModel<Book> entityModel = assembler.toModel(updatedBook);
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
-    @DeleteMapping("/book/{id}")
-    public void deleteBook(@PathVariable Long id) {
+    @DeleteMapping("/books/{id}")
+    ResponseEntity<?> deleteBook(@PathVariable Long id) {
         bookService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -5,6 +5,9 @@ import com.mbooking.service.AuthorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,10 +25,10 @@ public class AuthorController {
     @Autowired
     private AuthorModelAssembler assembler;
 
-    @GetMapping("/author/{id}")
+    @GetMapping("/authors/{id}")
     public EntityModel<Author> author(@PathVariable Long id) {
-        return assembler.toModel(
-                authorService.findById(id));
+        Author author = authorService.findById(id);
+        return assembler.toModel(author);
     }
 
     @RequestMapping(value = "/authors", method = RequestMethod.GET)
@@ -37,19 +40,28 @@ public class AuthorController {
                 linkTo(methodOn(AuthorController.class)).withSelfRel());
     }
 
-    @PostMapping("/author")
-    public Author newAuthor(@RequestBody Author newAuthor) {
-        return authorService.save(newAuthor);
+    @PostMapping("/authors")
+    public ResponseEntity<?> newAuthor(@RequestBody Author newAuthor) {
+        Author insertedAuthor = authorService.save(newAuthor);
+        EntityModel<Author> entityModel = assembler.toModel(insertedAuthor);
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
-    @PutMapping("/author/{id}")
-    public Author replace(@RequestBody Author newAuthor,@PathVariable Long id) {
-        return authorService.replace(newAuthor, id);
+    @PutMapping("/authors/{id}")
+    public ResponseEntity<?> replace(@RequestBody Author newAuthor,@PathVariable Long id) {
+        Author updatedAuthor = authorService.replace(newAuthor, id);
+        EntityModel<Author> entityModel = assembler.toModel(updatedAuthor);
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
-    @DeleteMapping("/author/{id}")
-    public void delete(@PathVariable Long id) {
+    @DeleteMapping("/authors/{id}")
+    ResponseEntity<?> delete(@PathVariable Long id) {
         authorService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

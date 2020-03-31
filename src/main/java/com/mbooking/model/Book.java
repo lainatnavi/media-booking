@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Domain model Book entity
@@ -14,16 +15,20 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "TITLE")
     private String title;
+
+    // @Column name can be ommitted since defaults to columns name
     private String isbn;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST) // cascade only save operations
     @JoinTable(
         name = "BOOK_AUTHOR",
         joinColumns = @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID"),
         inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID"))
     @JsonIgnoreProperties("books") // Avoid recursive child references
-    private List<Author> authors;
+    private Set<Author> authors;
 
     protected Book() {}
 
@@ -72,11 +77,11 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public List<Author> getAuthors() {
+    public Set<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
 }

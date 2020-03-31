@@ -130,3 +130,6 @@ buildNumber.properties
 
 # H2 database
 .data/
+
+# Extra text files
+curl.txt

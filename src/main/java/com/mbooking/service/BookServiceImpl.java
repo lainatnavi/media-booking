@@ -1,7 +1,7 @@
 package com.mbooking.service;
 
 import com.mbooking.model.Book;
-import com.mbooking.repository.BookRepository;
+import com.mbooking.dao.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

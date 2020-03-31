@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Domain model Author entity
@@ -18,7 +19,7 @@ public class Author {
 
     @ManyToMany(mappedBy = "authors")
     @JsonIgnoreProperties("authors") // Avoid recursive parent references
-    private List<Book> books;
+    private Set<Book> books;
 
     protected Author() {}
 
@@ -51,11 +52,11 @@ public class Author {
         this.name = name;
     }
 
-    public List<Book> getBooks() {
+    public Set<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(Set<Book> books) {
         this.books = books;
     }
 }
