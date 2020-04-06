@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +36,10 @@ public class BookController {
     // into the id parameter of the book method
     // HTTP requests to /book are mapped to the book() method
     @GetMapping("/books/{id}")
-    EntityModel<Book> book(@PathVariable Long id) {
+    ResponseEntity<?> book(@PathVariable Long id) {
         Book book = bookService.findById(id);
-        return assembler.toModel(book);
+        EntityModel<Book> entityModel = assembler.toModel(book);
+        return new ResponseEntity<>(entityModel, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/books", method = RequestMethod.GET)
