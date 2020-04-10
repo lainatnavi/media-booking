@@ -13,8 +13,10 @@ import java.util.Set;
 public class Author {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_SEQ_GEN")
+    @SequenceGenerator(name = "AUTHOR_SEQ_GEN", sequenceName = "AUTHOR_SEQ_GEN", allocationSize = 1)
     private Long id;
+
     private String name;
 
     @ManyToMany(mappedBy = "authors")

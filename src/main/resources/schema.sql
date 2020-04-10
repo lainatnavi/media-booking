@@ -2,6 +2,15 @@
 
 --ALTER SEQUENCE HIBERNATE_SEQUENCE RESTART WITH 1;
 
+--BEGIN
+--   EXECUTE IMMEDIATE 'DROP TABLE ' || book_author;
+--EXCEPTION
+--   WHEN OTHERS THEN
+--      IF SQLCODE != -942 THEN
+--         RAISE;
+--      END IF;
+--END;
+
 drop table if exists book_author;
 create table book_author (
     book_id int,

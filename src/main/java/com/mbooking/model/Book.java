@@ -13,20 +13,21 @@ import java.util.Set;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_SEQ_GEN")
+    @SequenceGenerator(name = "BOOK_SEQ_GEN", sequenceName = "BOOK_SEQ_GEN", allocationSize = 1)
     private Long id;
 
-    @Column(name = "TITLE")
     private String title;
 
-    // @Column name can be ommitted since defaults to columns name
+    @Column(unique = true)
     private String isbn;
 
     @ManyToMany(cascade = CascadeType.PERSIST) // cascade only save operations
     @JoinTable(
         name = "BOOK_AUTHOR",
         joinColumns = @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID"),
-        inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID"))
+        inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID"),
+        uniqueConstraints = @UniqueConstraint(columnNames = {"BOOK_ID", "AUTHOR_ID"}))
     @JsonIgnoreProperties("books") // Avoid recursive child references
     private Set<Author> authors;
 
