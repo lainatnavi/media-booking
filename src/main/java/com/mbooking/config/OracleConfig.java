@@ -8,12 +8,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
 import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
 
 @Configuration
+@Profile("ora")
 @ConfigurationProperties("oracle")
 public class OracleConfig {
     private static Logger log = LoggerFactory.getLogger(OracleConfig.class);
@@ -28,9 +30,9 @@ public class OracleConfig {
     private String url;
 
     @Bean
-    CommandLineRunner initDatabase(BookRepository repository) {
+    CommandLineRunner sayHi() {
         return args -> {
-            log.info("configurations........................");
+            log.info("oracleConfig........................");
             for (int i = 0; i<10; i++) {
                 System.out.println("......................................");
             }

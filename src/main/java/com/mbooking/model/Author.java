@@ -13,8 +13,8 @@ import java.util.Set;
 public class Author {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_SEQ_GEN")
-    @SequenceGenerator(name = "AUTHOR_SEQ_GEN", sequenceName = "AUTHOR_SEQ_GEN", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_ID_GEN")
+    @SequenceGenerator(name = "AUTHOR_ID_GEN", sequenceName = "AUTHOR_SEQ_GEN", allocationSize = 100)
     private Long id;
 
     private String name;
