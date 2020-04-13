@@ -43,6 +43,7 @@ public class BookController {
     }
 
     @RequestMapping(value = "/books", method = RequestMethod.GET)
+    @CrossOrigin(origins = "http://localhost:4200")
     CollectionModel<EntityModel<Book>> books() {
         List<EntityModel<Book>> books = bookService.findAll().stream()
                 .map(assembler::toModel)

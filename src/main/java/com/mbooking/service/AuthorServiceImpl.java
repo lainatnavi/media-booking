@@ -1,5 +1,6 @@
 package com.mbooking.service;
 
+import com.mbooking.error.AuthorNotFoundException;
 import com.mbooking.model.Author;
 import com.mbooking.dao.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Autowired
     private AuthorRepository authorRepository;
 
+    @Override
     public Author findById(Long id) {
         return authorRepository.findById(id)
                 .orElseThrow(() -> new AuthorNotFoundException(id));

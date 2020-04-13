@@ -1,5 +1,6 @@
 package com.mbooking.service;
 
+import com.mbooking.error.BookNotFoundException;
 import com.mbooking.model.Book;
 import com.mbooking.dao.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;

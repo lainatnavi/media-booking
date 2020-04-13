@@ -10,7 +10,7 @@ create table book_author (
 drop table author;
 create table author (
     id number(10,0) primary key,
-    name varchar2(255) not null
+    name varchar2(255) not null unique
 );
 drop sequence AUTHOR_SEQ_GEN;
 create sequence AUTHOR_SEQ_GEN
